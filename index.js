@@ -38,9 +38,14 @@ const gameController = (() => {
   const makeMove = (index) => {
     gameBoard.setField(index, _currentPlayer);
     if (checkForWin()) {
-      console.log(_currentPlayer.getSign() + ' wins');
-    } else if (checkForTie()) console.log("It's a draw!");
+      displayController.setResultDisplay(_currentPlayer);
+      return;
+    } else if (checkForTie()) {
+      displayController.setResultDisplay('draw');
+      return;
+    }
     changeCurrentPlayer();
+    displayController.setMessage(`Player ${_currentPlayer.getSign()}'s turn`);
   };
 
   const checkForWin = () => {
@@ -84,6 +89,7 @@ const gameController = (() => {
 
 const displayController = (() => {
   let cells = document.querySelectorAll('.cell');
+  const messageDisplay = document.querySelector('.message');
 
   cells.forEach((cell) => {
     cell.addEventListener('click', (e) => {
@@ -98,4 +104,18 @@ const displayController = (() => {
       cells[i].textContent = gameBoard.getField(i);
     }
   };
+
+  const setResultDisplay = (winner) => {
+    if (winner === 'draw') {
+      messageDisplay.textContent = "It's a draw!";
+    } else {
+      messageDisplay.textContent = `Player ${winner.getSign()} wins!`;
+    }
+  };
+
+  const setMessage = (message) => {
+    messageDisplay.textContent = message;
+  };
+
+  return { setResultDisplay, setMessage };
 })();
