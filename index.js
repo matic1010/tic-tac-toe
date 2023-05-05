@@ -7,7 +7,7 @@ const Player = function (sign) {
   return { getSign, setSign };
 };
 
-const GameBoard = (function () {
+const gameBoard = (() => {
   let _board = new Array(9);
 
   const getField = (index) => _board[index];
