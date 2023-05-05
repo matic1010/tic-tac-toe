@@ -37,6 +37,9 @@ const gameController = (() => {
 
   const makeMove = (index) => {
     gameBoard.setField(index, _currentPlayer);
+    if (checkForWin()) {
+      console.log(_currentPlayer.getSign() + ' wins');
+    } else if (checkForTie()) console.log("It's a draw!");
     changeCurrentPlayer();
   };
 
@@ -68,6 +71,14 @@ const gameController = (() => {
 
     return result;
   };
+
+  const checkForTie = () => {
+    for (let i = 0; i < 9; i++) {
+      if (!gameBoard.getField(i)) return false;
+    }
+    return true;
+  };
+
   return { makeMove, checkForWin };
 })();
 
