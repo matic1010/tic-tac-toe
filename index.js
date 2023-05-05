@@ -40,7 +40,35 @@ const gameController = (() => {
     changeCurrentPlayer();
   };
 
-  return { makeMove };
+  const checkForWin = () => {
+    const winningCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    let result = false;
+
+    winningCombinations.forEach((combination) => {
+      if (gameBoard.getField(combination[0])) {
+        if (
+          gameBoard.getField(combination[0]) ===
+            gameBoard.getField(combination[1]) &&
+          gameBoard.getField(combination[0]) ===
+            gameBoard.getField(combination[2])
+        ) {
+          result = true;
+        }
+      }
+    });
+
+    return result;
+  };
+  return { makeMove, checkForWin };
 })();
 
 const displayController = (() => {
