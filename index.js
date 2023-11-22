@@ -32,6 +32,7 @@ const gameController = (function() {
         console.log("It's a draw!")
       }
       _toggleActivePlayer();
+      displayController.renderBoard(gameBoard);
     } else {
       console.log("field already taken")
     }
@@ -98,3 +99,42 @@ const gameController = (function() {
 
   return { makeMove, checkForWin };
 })();
+
+const displayController = (function () {
+  const renderBoard = (board) => {
+    const htmlBoard = document.getElementById("board");
+
+    htmlBoard.innerHTML = "";
+
+    for (let i = 0; i < 9; i++) {
+      const htmlField = document.createElement("div");
+      htmlField.classList.add("field");
+
+      if (i === 2 || i === 5 || i === 8) {
+        htmlField.classList.add("no-r");
+      }
+
+      if (i === 0 || i === 3 || i === 6) {
+        htmlField.classList.add("no-l");
+      }
+      if (i <= 2) {
+        htmlField.classList.add("no-t");
+      }
+      if (i >= 6) {
+        htmlField.classList.add("no-b");
+      }
+
+      if(board.getField(i)) {
+        htmlField.textContent = board.getField(i);
+      } else {
+        htmlField.addEventListener("click", () => gameController.makeMove(i))
+      }
+
+      htmlBoard.appendChild(htmlField);
+    }
+  }
+
+  return { renderBoard }
+})();
+
+displayController.renderBoard(gameBoard);
